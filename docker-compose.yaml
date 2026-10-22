@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: .
+    container_name: java_app
+    ports:
+      - "8080:8080"
+    networks:
+      - system_network
+  gateway:
+    image: nginx:alpine
+    container_name: gateway
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - backend
+    networks:
+      - system_network
+
+networks:
+  system_network:
+    driver: bridge
